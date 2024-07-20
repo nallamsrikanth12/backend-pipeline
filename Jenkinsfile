@@ -22,6 +22,15 @@ pipeline {
                 
             }
         }
+        stage('Build') {
+            steps {
+                sh """
+                npm install
+                ls -lrt
+                echo "print the version : ${appversion}"
+                """
+            }
+        }
         stage('zip the code') {
             steps {
                 sh """
