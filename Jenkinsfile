@@ -40,6 +40,15 @@ pipeline {
                 """
             }
         }
+        stage('scan the code') {
+            steps {
+                script {
+                     withSonarQubeEnv('sonar') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
     }
     post {
         always {
