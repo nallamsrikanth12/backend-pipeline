@@ -9,6 +9,7 @@ pipeline {
     }
     environment {
         def appversion = ''
+        nexusUrl = 'nexus.srikantheswar.online:8081'
     }
     
     stages {
@@ -49,6 +50,27 @@ pipeline {
                      withSonarQubeEnv('sonar') {
                         sh "${scannerHome}/bin/sonar-scanner"
                     }
+                }
+            }
+        }
+        stage('nexus artifact uploader') {
+            steps {
+                script {
+                nexusArtifactUploader(
+                nexusVersion: 'nexus3',
+                protocol: 'http',
+                nexusUrl: "${nexusUrl}",
+                groupId: 'com.expense',
+                version: "${appversion}",
+                repository: 'backend',
+                credentialsId: 'nexus-auth',
+                artifacts: [
+                [artifactId: "backend" ,
+                classifier: '',
+                file: 'backend-' + ${appversion} + '.zip',
+                type: 'zip']
+        ]
+     )
                 }
             }
         }
