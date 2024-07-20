@@ -56,19 +56,19 @@ pipeline {
         stage('nexus artifact uploader') {
             steps {
                 script {
-                    nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: "${nexusUrl}",
-                    groupId: 'com.expense',
-                    version: "${appversion}",
-                    repository: 'backend',
-                    credentialsId: 'nexus-auth',
-                    artifacts: [
-                    [artifactId: "backend" ,
-                    classifier: '',
-                    file: 'backend' - ${appversion}  '.zip',
-                    type: 'zip']
+                     nexusArtifactUploader(
+                        nexusVersion: 'nexus3',
+                        protocol: 'http',
+                        nexusUrl: "${nexusUrl}",
+                        groupId: 'com.expense',
+                        version: "${appVersion}",
+                        repository: "backend",
+                        credentialsId: 'nexus-auth',
+                        artifacts: [
+                            [artifactId: "backend" ,
+                            classifier: '',
+                            file: "backend-" + "${appVersion}" + '.zip',
+                            type: 'zip']
         ]
      )
                 }
