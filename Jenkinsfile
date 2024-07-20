@@ -7,6 +7,10 @@ pipeline {
         ansiColor('xterm')
         disableConcurrentBuilds()
     }
+    parameters {
+         booleanParam(name: 'deploy', defaultValue: false, description: 'Toggle this value')
+
+    }
     environment {
         def appversion = ''
         nexusUrl = 'nexus.srikantheswar.online:8081'
@@ -74,6 +78,22 @@ pipeline {
                 }
             }
         }
+        stage('deploy') {
+            when {
+                expression {
+                    params.deploy
+                }
+            }
+            steps {
+                script {
+                    def = params {
+                        string(name: 'appversion', value: "${appversion}")
+                    }
+                    build job: 'backend-dev-deployment', parameters: params , wait: false
+                }
+            }
+        }
+
     }
     post {
         always {
